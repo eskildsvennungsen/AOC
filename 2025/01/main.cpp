@@ -23,7 +23,7 @@ int task_one(int start_index, std::vector<int>& input)
       index = (index + value + MAX_LOCK_NUM) % MAX_LOCK_NUM;
 
       if (index == 0)
-         pwd += 1;
+         pwd++;
    }
    return pwd;
 }
@@ -35,24 +35,29 @@ int task_two(int start_index, std::vector<int>& input)
 
    for (const auto& value : input)
    {
-      int old_pos = curr_pos;
+      bool was_zero = curr_pos == 0;
       curr_pos += value;
 
-      std::printf("Value: %d, OldPos: %d, ", value, old_pos);
-
-      while (curr_pos >= 100 || curr_pos < 0)
+      if (curr_pos < 0 && !was_zero)
       {
-         curr_pos = (curr_pos >= 100) ? curr_pos - 100 : curr_pos + 100;
          pwd++;
       }
-      std::printf("NewPos: %d, PWD: %d\n", curr_pos, pwd);
+
+      pwd += std::abs(curr_pos) / MAX_LOCK_NUM;
+
+      if (curr_pos == 0)
+      {
+         pwd++;
+      }
+
+      curr_pos = ((curr_pos % 100) + 100) % 100;
    }
    return pwd;
 }
 
 int main(int argc, char* argv[])
 {
-   std::string f_name = "rsc/training";
+   std::string f_name = "rsc/input.txt";
 
    int index = 0;
 
@@ -69,9 +74,9 @@ int main(int argc, char* argv[])
       parsed_file_input.push_back(parse_input(line));
    }
 
-   //int task_one_pwd = task_one(index, parsed_file_input);
+   int task_one_pwd = task_one(index, parsed_file_input);
    int task_two_pwd = task_two(index, parsed_file_input);
 
-   //std::printf("Task #1 PWD: %d\n", task_one_pwd);
+   std::printf("Task #1 PWD: %d\n", task_one_pwd);
    std::printf("Task #2 PWD: %d\n", task_two_pwd);
 }
