@@ -36,12 +36,12 @@ int main(int argc, char* argv[])
    {
       int t_sum{0};
 
+      std::for_each(storage.begin(), storage.end(), [&](std::string& s){ 
+         std::for_each(s.begin(), s.end(), [&](char& c){ if (c == accessable) c = '.'; });
+      });
+
       for (int i{0}; i < rows; i++)
       {
-         std::for_each(storage.begin(), storage.end(), [&](std::string& s){ 
-            std::for_each(s.begin(), s.end(), [&](char& c){ if (c == accessable) c = '.'; });
-         });
-
          for (int j{0}; j < cols; j++)
          {
             if (storage[i][j] != roll)
